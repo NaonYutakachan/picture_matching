@@ -23,10 +23,9 @@
 
     <!-- 温度を操作するバー -->
     <div>
-        <label class='eb_label' for="temp" title="Temperature">Temperature(TODO: 実装待ち)</label>
-        <input style='width:150px;' type="range"></input>
-        <span class='eb_span' id="label_temp"></span>
-        <input style='width: 80px; display: none;' type='text' value=''>
+        <label>Temperature</label>
+        <input style='width:150px;' type="range" id="temperature" min=0 max=5 step=0.000001 value=2.26918531421
+            oninput="updateTemperature()" onchange="updateTemperature()"></input>
     </div>
 
 </body>

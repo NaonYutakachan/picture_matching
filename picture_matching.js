@@ -5,8 +5,7 @@
 
 const RGBA_SIZE = 4;
 
-// let temperature = 2.26918531421;
-let temperature = 1.0;
+let temperature = 2.26918531421;
 
 /**
  * Ising模型のスピン系を描画するキャンバス．
@@ -73,6 +72,10 @@ function updateStateByMetropolis() {
             isingState[x][y] = - isingState[x][y];
         }
     }
+}
+
+function updateTemperature() {
+    temperature = Math.max(0.00000001, parseFloat(document.getElementById('temperature').value));
 }
 
 function convertSpinIntoPixel(spin, bufferData, bufferIndex) {

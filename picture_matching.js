@@ -1,5 +1,5 @@
 /**
- * 結合定数は固定値とし，-1 とする．
+ * 結合定数は固定値とし，1 とする．
  * 周期境界条件を考慮する．
  */
 
@@ -100,17 +100,18 @@ function convertStateIntoPixelBufferData(buffer) {
     }
 }
 
-function draw_all() {
+function drawCanvas() {
     let buffer = stateContext.getImageData(0, 0, isingStateCanvas.width, isingStateCanvas.height);
     convertStateIntoPixelBufferData(buffer);
     stateContext.putImageData(buffer, 0, 0);
 }
 
 let tick = function () {
+    // モデルの更新・描画を行う．
     updateStateByMetropolis();
-    draw_all();
+    drawCanvas();
 
-    // 再帰的に描画・更新を行う．
+    // 再帰的に更新・描画を行う．
     requestAnimationFrame(tick);
 };
 

@@ -1,9 +1,11 @@
+#description {
+    border: double 3px #ff6600;
+}
+
 #ising-frame {
-    float: left;
     width: 500px;
     height: 500px;
-    position: 'absolute';
     left: 10px;
     top: 10px;
-    border: 1px solid black;
+    border: 5px solid black;
 }

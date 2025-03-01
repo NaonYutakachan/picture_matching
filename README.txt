@@ -1,8 +1,7 @@
 絵合わせゲーム(実装中)です。
 現在はモデルのシミュレーションのみが動作します。
 
-全てのファイルを同ディレクトリに配置し、picture_matching.html を開くことで実行されます。
-
-こちらでも動作します: https://naonyutakachan.github.io/picture_matching/picture_matching.html
+このブランチは開発中のものにつき、動作保証はありません。
+アプリケーションを公開し次第、リンクをここに示します。
 
 このドキュメントは随時更新予定です。

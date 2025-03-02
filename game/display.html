@@ -5,8 +5,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="/static/animation.js"></script>
-    <link rel="stylesheet" href="/static/style.css">
+    <script src="/game/animation.js"></script>
+    <link rel="stylesheet" href="/game/style.css">
     <title>Go Web Programming</title>
 </head>
 
@@ -30,7 +30,7 @@
     <!-- 温度を操作するバー -->
     <div>
         <label>Temperature</label>
-        <input style="width:150px;" type="range" id="temperature" min=0 max=5 step=0.000001 value=2.26918531421
+        <input style="width:150px;" type="range" id="temperature" min=0.00000000001 max=5.0 step=0.00000000001 value=2.26918531421
             oninput="updateTemperature()" onchange="updateTemperature()"></input>
     </div>
 </body>

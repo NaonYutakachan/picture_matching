@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-func processGame(writer http.ResponseWriter, r *http.Request) {
+func processGame(writer http.ResponseWriter, request *http.Request) {
 	t := template.Must(template.ParseFiles("game/display.html"))
 	t.ExecuteTemplate(writer, "display", "(可変メッセージ)")
 }
@@ -17,7 +17,7 @@ func main() {
 
 	// 表示するファイルを取得する．
 	files := http.FileServer(http.Dir("game"))
-	mux.Handle("/static/", http.StripPrefix("/static/", files))
+	mux.Handle("/game/", http.StripPrefix("/game/", files))
 
 	// ハンドラを登録する．
 	mux.HandleFunc("/game", processGame)

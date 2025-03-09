@@ -29,9 +29,17 @@
 
     <!-- 温度を操作するバー -->
     <div>
-        <label>Temperature</label>
-        <input style="width:150px;" type="range" id="temperature" min=0.00000000001 max=5.0 step=0.00000000001 value=2.26918531421
+        <label>乱雑さ</label>
+        <input style="width:150px;" type="range" id="temperature" min=0.00000000001 max=4.53837062842 step="any" value=2.26918531421
             oninput="updateTemperature()" onchange="updateTemperature()"></input>
+        <p><output id="temperature"></output></p>
+    </div>
+
+    <!-- Ising模型の変化速度を操作するバー -->
+    <div>
+        <label>変化の速さ</label>
+        <input style="width:150px;" type="range" id="speed_position" min=0 max=100 step="any" value=50
+            oninput="updateSpeed()" onchange="updateSpeed()"></input>
     </div>
 </body>
 

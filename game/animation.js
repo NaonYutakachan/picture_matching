@@ -13,7 +13,9 @@ const RGBA_SIZE = 4;
  * Ising模型の温度．
  * @type {number}
  */
-let temperature = 2.26918531421;
+let temperature;
+
+let speed;
 
 /**
  * Ising模型のスピン系を描画するキャンバス．
@@ -71,7 +73,7 @@ function calcEnergyDifference(x, y) {
  * Ising模型のスピン系をメトロポリス法によって更新する．
  */
 function updateStateByMetropolis() {
-    for (var i = 0; i < 10000; i++) {
+    for (var i = 0; i < speed; i++) {
         // 現在の状態から反転させるスピンを，ランダムに座標によって指定する．
         const x = Math.floor(Math.random() * stateXSize);
         const y = Math.floor(Math.random() * stateYSize);
@@ -90,6 +92,20 @@ function updateStateByMetropolis() {
 
 function updateTemperature() {
     temperature = parseFloat(document.getElementById('temperature').value);
+}
+
+function updateSpeed() {
+    let speedPosition = parseFloat(document.getElementById('speed_position').value);
+
+    let minPosition = 0;
+    let maxPosition = 100;
+
+    let minSpeed = Math.log(10);
+    let maxSpeed = Math.log(100000);
+
+    let scale = (maxSpeed - minSpeed) / (maxPosition - minPosition);
+
+    speed = parseInt(Math.exp(minSpeed + scale * (speedPosition - minPosition)));
 }
 
 /**
@@ -184,6 +200,10 @@ let init = function () {
             isingState[x][y] = 2 * randomBit - 1;
         }
     }
+
+    // 温度と変化速度を初期値に設定する．
+    updateTemperature();
+    updateSpeed();
 
     // 画面への描画・更新を開始する．
     requestAnimationFrame(tick);

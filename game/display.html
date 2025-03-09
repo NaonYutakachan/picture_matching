@@ -22,24 +22,21 @@
 
     <!-- Ising模型を描画する枠 -->
     <div id="ising-frame">
-        <canvas id="ising-state-canvas" height=500 width=500></canvas>
+        <canvas id="ising-state-canvas" height=500px width=500px></canvas>
     </div>
 
     <br>
 
     <!-- 温度を操作するバー -->
     <div>
-        <label>乱雑さ</label>
-        <input style="width:150px;" type="range" id="temperature" min=0.00000000001 max=4.53837062842 step="any" value=2.26918531421
-            oninput="updateTemperature()" onchange="updateTemperature()"></input>
-        <p><output id="temperature"></output></p>
+        <label>乱雑さ</label><br>
+        <input type="range" class="input-range" id="temperature_position" min=0 max=100 step="0.5" value=50></input>
     </div>
 
     <!-- Ising模型の変化速度を操作するバー -->
     <div>
-        <label>変化の速さ</label>
-        <input style="width:150px;" type="range" id="speed_position" min=0 max=100 step="any" value=50
-            oninput="updateSpeed()" onchange="updateSpeed()"></input>
+        <label>変化の速さ</label><br>
+        <input type="range" class="input-range" id="speed_position" min=0 max=100 step="0.5" value=50></input>
     </div>
 </body>
 

@@ -21,11 +21,11 @@ class IsingCanvas {
          * Ising模型のスピン系を描画するためのメソッドを持つオブジェクト．
          * @type {CanvasRenderingContext2D}
          */
-        this.context = isingCanvasElement.getContext('2d');
+        this.context = isingCanvasElement.getContext("2d");
 
         // キャンバスを初期化する．
         this.context.clearRect(0, 0, this.xSize, this.ySize);
-        this.context.fillStyle = 'rgba(200,200,200,0.2)';
+        this.context.fillStyle = "rgba(200,200,200,0.2)";
         this.context.fillRect(0, 0, this.xSize, this.ySize);
 
         /**
@@ -59,7 +59,7 @@ class IsingCanvas {
             spinColorR = 0x3C;
             spinColorG = 0xB3;
             spinColorB = 0x71;
-        }else{
+        } else {
             spinColorR = 0xFF;
             spinColorG = 0xFD;
             spinColorB = 0xD0;
@@ -169,13 +169,16 @@ class IsingModel {
  * Ising模型の外部パラメータに関する情報を持つクラス．
  */
 class IsingParameter {
-    constructor() {
+    /**
+     * @param {number} temperature Ising模型の初期温度．
+     * @param {number} changeRate Ising模型の初期変化速度．
+     */
+    constructor(temperature, changeRate) {
         /**
          * Ising模型の温度．
          * @type {number}
          */
-        this.temperature;
-        this.updateTemperature();
+        this.temperature = temperature;
 
         /**
          * Ising模型のスピン系が変化する速度．
@@ -183,36 +186,23 @@ class IsingParameter {
          * 正確には，1フレーム当たりの状態遷移判定回数．
          * @type {number}
          */
-        this.changeRate;
-        this.updateChangeRate();
+        this.changeRate = changeRate;
     }
 
-    updateTemperature() {
-        let temperaturePosition = parseFloat(document.getElementById("temperature_position").value);
-
-        let minPosition = 0;
-        let maxPosition = 100;
-
-        let minTemperature = 0.00000000001;
-        let maxTemperature = 4.53837062843;
-
-        let scale = (maxTemperature - minTemperature) / (maxPosition - minPosition);
-
-        this.temperature = minTemperature + scale * (temperaturePosition - minPosition);
+    /**
+     * 温度を受け取り，現在の温度パラメータをその値に更新する．
+     * @param {number} temperature 温度．
+     */
+    updateTemperature(temperature) {
+        this.temperature = temperature;
     }
 
-    updateChangeRate() {
-        let speedPosition = parseFloat(document.getElementById("speed_position").value);
-
-        let minPosition = 0;
-        let maxPosition = 100;
-
-        let minSpeed = Math.log(100);
-        let maxSpeed = Math.log(100000);
-
-        let scale = (maxSpeed - minSpeed) / (maxPosition - minPosition);
-
-        this.changeRate = parseInt(Math.exp(minSpeed + scale * (speedPosition - minPosition)));
+    /**
+     * Ising模型の変化速度を受け取り，現在の速度パラメータをその値に更新する．
+     * @param {number} changeRate 変化速度．
+     */
+    updateChangeRate(changeRate) {
+        this.changeRate = changeRate;
     }
 }
 
@@ -221,7 +211,7 @@ class IsingSystem {
      * @param {number} xSize Ising模型のx軸方向の大きさ．単位はpx.
      * @param {number} ySize Ising模型のy軸方向の大きさ．単位はpx.
      */
-    constructor(xSize, ySize) {
+    constructor(xSize, ySize, temperature, changeRate) {
         /**
          * @type {IsingModel}
          */
@@ -230,7 +220,7 @@ class IsingSystem {
         /**
          * @type {IsingParameter}
          */
-        this.parameter = new IsingParameter();
+        this.parameter = new IsingParameter(temperature, changeRate);
     }
 
     /**
@@ -265,7 +255,7 @@ class IsingSystem {
 }
 
 class PlayerBoard {
-    constructor(isingCanvasElement, isingModelXSize, isingModelYSize) {
+    constructor(isingCanvasElement, isingModelXSize, isingModelYSize, temperature, changeRate) {
         /**
          * @type {IsingCanvas}
          */
@@ -274,7 +264,7 @@ class PlayerBoard {
         /**
          * @type {IsingSystem}
          */
-        this.IsingSystem = new IsingSystem(isingModelXSize, isingModelYSize);
+        this.IsingSystem = new IsingSystem(isingModelXSize, isingModelYSize, temperature, changeRate);
     }
 
     /**
@@ -286,6 +276,50 @@ class PlayerBoard {
     }
 }
 
+function calcTemperatureFromInputPosition() {
+    // 入力から温度バーの位置を受け取る．
+    const temperaturePosition = parseFloat(document.getElementById("temperature-position").value);
+
+    // 入力の最小値と最大値を取り出す．
+    const minPosition = 0;
+    const maxPosition = 100;
+
+    // 温度の最小値と最大値を設定する．
+    const minTemperature = 0.00000000001;
+    const maxTemperature = 4.53837062843;
+
+    // 単位幅あたりの温度変更値を求める．
+    const scale = (maxTemperature - minTemperature) / (maxPosition - minPosition);
+
+    // 入力と対応する温度を求めて戻り値として返す．
+    const temperature = minTemperature + scale * (temperaturePosition - minPosition);
+    return temperature;
+}
+
+function calcChangeRateFromInputPosition() {
+    // 入力から温度バーの位置を受け取る．
+    const changeRatePosition = parseFloat(document.getElementById("change-rate-position").value);
+
+    // 入力の最小値と最大値を取り出す．
+    const minPosition = 0;
+    const maxPosition = 100;
+
+    // 変化速度の最小値と最大値を設定する．
+    const minChangeRate = 100;
+    const maxChangeRate = 100000;
+
+    // 速度をlogスケールに変換する．
+    const minLogChangeRate = Math.log(minChangeRate);
+    const maxLogChangeRate = Math.log(maxChangeRate);
+
+    // 単位幅あたりの速度変更値を求める．
+    const scale = (maxLogChangeRate - minLogChangeRate) / (maxPosition - minPosition);
+
+    // 入力と対応する温度を求めて戻り値として返す．
+    const changeRate = parseInt(Math.exp(minLogChangeRate + scale * (changeRatePosition - minPosition)));
+    return changeRate;
+}
+
 /**
  * @param {PlayerBoard} myBoard 自分の盤を表すインスタンス．
  */
@@ -294,21 +328,27 @@ function tick(myBoard) {
     myBoard.IsingSystem.updateStateByMetropolis();
     myBoard.drawCurrentIsingState();
 
-    const queryTemperature = document.querySelector("#temperature_position");
-    queryTemperature.oninput = myBoard.IsingSystem.parameter.updateTemperature();
-    const querySpeedPosition = document.querySelector("#speed_position");
-    querySpeedPosition.oninput = myBoard.IsingSystem.parameter.updateChangeRate();
+    // パラメータの変更を動的に受け付ける．
+    const temperature = calcTemperatureFromInputPosition();
+    const changeRate = calcChangeRateFromInputPosition();
+    myBoard.IsingSystem.parameter.updateTemperature(temperature);
+    myBoard.IsingSystem.parameter.updateChangeRate(changeRate);
+
+    // パラメータの値をwebページに反映する．
+    document.getElementById("current-temperature").innerText = myBoard.IsingSystem.parameter.temperature;
+    document.getElementById("current-change-rate").innerText = myBoard.IsingSystem.parameter.changeRate;
 
     // 再帰的に更新・描画を行う．
     requestAnimationFrame(function () { tick(myBoard); });
 };
+
 
 /**
  * 本ファイル実行開始時に呼び出され，各変数を初期化する．
  */
 let init = function () {
     // Player用インスタンスを作成する．
-    let isingCanvasElement = document.getElementById('ising-state-canvas');
+    let isingCanvasElement = document.getElementById("ising-canvas");
     let isingModelXSize = 100;
     let isingModelYSize = 100;
     let myBoard = new PlayerBoard(isingCanvasElement, isingModelXSize, isingModelYSize);

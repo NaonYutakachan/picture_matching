@@ -10,7 +10,7 @@
     border: 5px solid black;
 }
 
-#ising-state-canvas{
+#ising-canvas {
     width: 500px;
     height: 500px;
 }

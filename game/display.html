@@ -20,23 +20,28 @@
         </p>
     </div>
 
-    <!-- Ising模型を描画する枠 -->
-    <div id="ising-frame">
-        <canvas id="ising-state-canvas" height=500px width=500px></canvas>
-    </div>
+    <!-- 自分の盤面 -->
+    <div id="my-board">
+        <!-- Ising模型を描画する枠 -->
+        <div id="ising-frame">
+            <canvas id="ising-canvas" height=500px width=500px></canvas>
+        </div>
 
-    <br>
+        <br>
 
-    <!-- 温度を操作するバー -->
-    <div>
-        <label>乱雑さ</label><br>
-        <input type="range" class="input-range" id="temperature_position" min=0 max=100 step="0.5" value=50></input>
-    </div>
+        <!-- 温度を操作するバー -->
+        <div>
+            <label for="temperature-position">乱雑さ</label><br>
+            <input type="range" class="input-range" id="temperature-position" min=0 max=100 step="any" value=50></input>
+            <p>現在の値は<span id="current-temperature"></span>です</p>
+        </div>
 
-    <!-- Ising模型の変化速度を操作するバー -->
-    <div>
-        <label>変化の速さ</label><br>
-        <input type="range" class="input-range" id="speed_position" min=0 max=100 step="0.5" value=50></input>
+        <!-- Ising模型の変化速度を操作するバー -->
+        <div>
+            <label>変化の速さ</label><br>
+            <input type="range" class="input-range" id="change-rate-position" min=0 max=100 step="any" value=50></input>
+            <p>現在の値は<span id="current-change-rate"></span>です</p>
+        </div>
     </div>
 </body>
 

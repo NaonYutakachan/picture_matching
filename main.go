@@ -8,7 +8,7 @@ import (
 
 func processGame(writer http.ResponseWriter, request *http.Request) {
 	t := template.Must(template.ParseFiles("game/display.html"))
-	t.ExecuteTemplate(writer, "display", "(可変メッセージ)")
+	t.ExecuteTemplate(writer, "display", "user 様")
 }
 
 func main() {

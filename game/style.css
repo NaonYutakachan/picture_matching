@@ -1,27 +1,91 @@
-#description {
-    border: double 3px #ff6600;
+@charset "utf-8";
+
+body {
+    /* 画面の背景色を指定する． */
+    background-color: #e2ffc6;
+
+    /* 画面全体の文字フォントを指定する． */
+    font-size: 16px;
+    font-family: "arial", "Hiragino Sans", "Meiryo", sans-serif;
 }
 
-#ising-frame {
-    width: 500px;
-    height: 500px;
-    left: 10px;
-    top: 10px;
-    border: 5px solid black;
+h1 {
+    font-size: 18px;
+    margin: 10px;
+    width: 300px;
+
+    /* 見出しに枠線をつける． */
+    padding: 6px;
+    border: 10px solid #ffffff;
+    border-radius: 100px;
+}
+
+#board-set {
+    /* 横幅を指定する． */
+    width: 1450px;
+
+    /* 中央に寄せる． */
+    margin: 0 auto;
+
+    /* 自分の盤と説明用の盤を横並びにする． */
+    display: flex;
+    justify-content: space-between;
+}
+
+#my-board {
+    /* 自分の盤の横幅を指定する． */
+    width: 700px;
+
+    /* 自分の盤に枠線をつける． */
+    padding: 10px;
+    border: 5px solid #000000;
+}
+
+#my-ising-canvas-and-role-models {
+    /* 自分の絵と見本の絵を横並びにする． */
+    display: flex;
+    justify-content: space-between;
 }
 
 #ising-canvas {
+    /* 自分の絵の大きさを指定する． */
     width: 500px;
     height: 500px;
+
+    /* 自分の絵に枠線をつける． */
+    border: 5px double #000000;
+}
+
+.role-model-label {
+    display: block;
+}
+
+.role-model-canvas {
+    width: 100px;
+    height: 100px;
+    border: 5px double black;
+}
+
+#parameter-controller {
+    padding: 10px;
+    border: 5px double #000000;
 }
 
 .input-range {
-    appearance: none;
     cursor: pointer;
     background: #8acdff;
     height: 14px;
     width: 500px;
     border-radius: 10px;
-    border: solid 3px #dff1ff;
+    border: double 3px #dff1ff;
     outline: 0;
+}
+
+#description-board {
+    /* 説明盤の横幅を指定する． */
+    width: 700px;
+
+    /* 説明盤に枠線をつける． */
+    padding: 10px;
+    border: 5px solid #000000;
 }

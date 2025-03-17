@@ -5,42 +5,79 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="/game/animation.js"></script>
+    <link rel="stylesheet" href="/game/destyle.css">
     <link rel="stylesheet" href="/game/style.css">
+    <script src="/game/role_models.js"></script>
+    <script src="/game/animation.js"></script>
     <title>Go Web Programming</title>
 </head>
 
 <body>
-    <div id="description">
-        <h1>
-            {{ . }}
-        </h1>
-        <p>
-            絵合わせゲームです．
-        </p>
-    </div>
+    <h1>
+        {{ . }} 絵合わせゲームです．
+    </h1>
 
-    <!-- 自分の盤面 -->
-    <div id="my-board">
-        <!-- Ising模型を描画する枠 -->
-        <div id="ising-frame">
-            <canvas id="ising-canvas" height=500px width=500px></canvas>
+    <!-- 全ての盤面の集合． -->
+    <div id="board-set">
+        <!-- 自分の盤面． -->
+        <div id="my-board">
+            <!-- 自分の絵と見本の絵の集合． -->
+            <div id="my-ising-canvas-and-role-models">
+                <!-- 自分の絵． -->
+                <canvas id="ising-canvas" height=500px width=500px></canvas>
+
+                <!-- 見本の絵． -->
+                <div id="role-model-list">
+                    <label class="role-model-label">
+                        <input type="radio" name="role-model" value="0">
+                        <canvas class="role-model-canvas" id="role-model-canvas-0" height=100px width=100px></canvas>
+                    </label>
+                    <label class="role-model-label">
+                        <input type="radio" name="role-model" value="1">
+                        <canvas class="role-model-canvas" id="role-model-canvas-1" height=100px width=100px></canvas>
+                    </label>
+                    <label class="role-model-label">
+                        <input type="radio" name="role-model" value="2">
+                        <canvas class="role-model-canvas" id="role-model-canvas-2" height=100px width=100px></canvas>
+                    </label>
+                    <label class="role-model-label">
+                        <input type="radio" name="role-model" value="3">
+                        <canvas class="role-model-canvas" id="role-model-canvas-3" height=100px width=100px></canvas>
+                    </label>
+                    <label class="role-model-label">
+                        <input type="radio" name="role-model" value="4">
+                        <canvas class="role-model-canvas" id="role-model-canvas-4" height=100px width=100px></canvas>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 自分のパラメータの操作盤． -->
+            <div id="parameter-controller">
+                <!-- 温度を操作するバー． -->
+                <label for="temperature-position">乱雑さ</label><br>
+                <input type="range" class="input-range" id="temperature-position" min=0 max=100 step="any"
+                    value=50></input>
+                <p>現在の値は<span id="current-temperature"></span>です</p>
+
+                <!-- 自分の絵の変化速度を操作するバー． -->
+                <label>変化の速さ</label><br>
+                <input type="range" class="input-range" id="change-rate-position" min=0 max=100 step="any"
+                    value=50></input>
+                <p>現在の値は<span id="current-change-rate"></span>です</p>
+
+                <!-- TODO: debug -->
+                <input type="button" id="state_push" value="display_state">
+            </div>
         </div>
 
-        <br>
-
-        <!-- 温度を操作するバー -->
-        <div>
-            <label for="temperature-position">乱雑さ</label><br>
-            <input type="range" class="input-range" id="temperature-position" min=0 max=100 step="any" value=50></input>
-            <p>現在の値は<span id="current-temperature"></span>です</p>
-        </div>
-
-        <!-- Ising模型の変化速度を操作するバー -->
-        <div>
-            <label>変化の速さ</label><br>
-            <input type="range" class="input-range" id="change-rate-position" min=0 max=100 step="any" value=50></input>
-            <p>現在の値は<span id="current-change-rate"></span>です</p>
+        <!-- 説明盤． -->
+        <div id="description-board">
+            <p>
+                ここに説明を追記する予定です．
+            </p>
+            <p>
+                ※現在，実装途中です．
+            </p>
         </div>
     </div>
 </body>

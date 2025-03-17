@@ -315,9 +315,32 @@ function calcChangeRateFromInputPosition() {
     // 単位幅あたりの速度変更値を求める．
     const scale = (maxLogChangeRate - minLogChangeRate) / (maxPosition - minPosition);
 
-    // 入力と対応する温度を求めて戻り値として返す．
+    // 入力と対応する速度を求めて戻り値として返す．
     const changeRate = parseInt(Math.exp(minLogChangeRate + scale * (changeRatePosition - minPosition)));
     return changeRate;
+}
+
+// TODO: delete
+function displayState(button, state) {
+    let console_str = "[\n";
+    if (button.value == "display_state") {
+        for (let i = 0; i < state.length; i++) {
+            let row = "\t[";
+            for (let j = 0; j < state[i].length; j++) {
+                const element = String(state[i][j]);
+                row += element;
+                if (j != state[i].length - 1) {
+                    row += ", ";
+                }else{
+                    row += "],\n";
+                }
+            }
+            console_str += row;
+        }
+        console_str += "],";
+        console.log(console_str);
+        button.value = "done";
+    }
 }
 
 /**
@@ -338,6 +361,10 @@ function tick(myBoard) {
     document.getElementById("current-temperature").innerText = myBoard.IsingSystem.parameter.temperature;
     document.getElementById("current-change-rate").innerText = myBoard.IsingSystem.parameter.changeRate;
 
+    // TODO: delete this debug sentence
+    const button = document.getElementById("state_push");
+    button.addEventListener("click", function () { displayState(button, myBoard.IsingSystem.model.state); });
+
     // 再帰的に更新・描画を行う．
     requestAnimationFrame(function () { tick(myBoard); });
 };
@@ -352,6 +379,22 @@ let init = function () {
     let isingModelXSize = 100;
     let isingModelYSize = 100;
     let myBoard = new PlayerBoard(isingCanvasElement, isingModelXSize, isingModelYSize);
+
+    // TODO: 見本の絵を描画する．
+    const roleModelIDList = [
+        "role-model-canvas-0",
+        "role-model-canvas-1",
+        "role-model-canvas-2",
+        "role-model-canvas-3",
+        "role-model-canvas-4",
+    ];
+    for(let i = 0; i < roleModelIDList.length; i++){
+        const roleModelID = roleModelIDList[i];
+        let roleModelCanvasElement = document.getElementById(roleModelID);
+        let roleModelCanvas = new IsingCanvas(roleModelCanvasElement);
+        roleModelCanvas.convertIsingStateIntoBufferData(roleModels[i]);
+        roleModelCanvas.drawCurrentBuffer();
+    }
 
     // 画面への描画・更新を開始する．
     requestAnimationFrame(function () { tick(myBoard); });

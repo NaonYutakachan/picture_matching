@@ -9,13 +9,16 @@ import (
 	"text/template"
 )
 
+// プログラム実行時の設定をまとめた構造体．
+//
+// Host は，サーバーのIPアドレス．
 type Configuration struct {
-	Address string
+	Host string
 }
 
 // config.json からプログラム実行時の設定を読み出し，構造体に格納して戻り値として返す．
 //
-// 成功時は構造体を返し，失敗時は nil とエラーを返す．
+// 成功時は構造体のアドレスを返し，失敗時は nil とエラーを返す．
 func loadConfig() (*Configuration, error) {
 	// 設定ファイルを読み出す．
 	file, err := os.Open("config.json")
@@ -57,9 +60,16 @@ func main() {
 	mux.HandleFunc("/", processGame) // TODO: タイトル画面の表示
 	mux.HandleFunc("/game", processGame)
 
+	// サーバーの受け付けポートとアドレスを用意する．
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	address := config.Host + ":" + port
+
 	// サーバーを起動する．
 	server := &http.Server{
-		Addr:    config.Address,
+		Addr:    address,
 		Handler: mux,
 	}
 	fmt.Print("Running server...")

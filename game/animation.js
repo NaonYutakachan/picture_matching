@@ -163,6 +163,17 @@ class IsingModel {
             - this.state[x][y] * this.state[x][yPlus1]
             - this.state[x][y] * this.state[x][yMinus1];
     }
+
+    /**
+     * 全てのスピンを反転させる．
+     */
+    reverseAllSpins() {
+        for (let x = 0; x < this.xSize; x++) {
+            for (let y = 0; y < this.ySize; y++) {
+                this.state[x][y] *= -1;
+            }
+        }
+    }
 }
 
 /**
@@ -331,7 +342,7 @@ function displayState(button, state) {
                 row += element;
                 if (j != state[i].length - 1) {
                     row += ", ";
-                }else{
+                } else {
                     row += "],\n";
                 }
             }
@@ -344,11 +355,91 @@ function displayState(button, state) {
 }
 
 /**
+ * 絵の変化を一時停止/再開するボタン．
+ * @type {HTMLElement}
+ */
+const pauseButton = document.getElementById("pause-button");
+
+/**
+ * "pause-button" 要素の value を切り替える関数．
+ * 
+ * `addEventListener` 関数で実行されることを想定している．
+ */
+function switchPauseButtonValue() {
+    // 絵が変化中なら一時停止し，ボタンを変化再開用に変更する．
+    if (pauseButton.value == "move") {
+        pauseButton.value = "pause";
+        pauseButton.textContent = "絵の変化を再開する[S]";
+    }
+    // 絵が停止中なら変化を再開し，ボタンを一時停止用に変更する．
+    else if (pauseButton.value == "pause") {
+        pauseButton.value = "move";
+        pauseButton.textContent = "絵の変化を一時停止する[S]";
+    }
+}
+pauseButton.addEventListener("click", switchPauseButtonValue);
+
+/**
+ * 絵の色を全て反転させるボタン．
+ * @type {HTMLElement}
+ */
+const reverseButton = document.getElementById("reverse-button");
+
+let reverseFlag = false;
+
+/**
+ * "reverse-button" 要素クリック時に色反転フラグを立てる関数．
+ * 
+ * `addEventListener` 関数で実行されることを想定している．
+ */
+function setReverseFlagTrue() {
+    reverseFlag = true;
+}
+reverseButton.addEventListener("click", setReverseFlagTrue);
+
+/**
+ * 色反転フラグを取り下げる関数．
+ */
+function setReverseFlagFalse() {
+    reverseFlag = false;
+}
+
+// 各キーボードショートカットを設定する．
+document.addEventListener("keydown", (event) => {
+    if (event.key == 's') {
+        switchPauseButtonValue();
+    }
+    if (event.key == 'r') {
+        setReverseFlagTrue();
+    }
+});
+
+function isStatePaused() {
+    if (pauseButton.value == "move") {
+        return false;
+    } else if (pauseButton.value == "pause") {
+        return true;
+    }
+}
+
+/**
  * @param {PlayerBoard} myBoard 自分の盤を表すインスタンス．
  */
 function tick(myBoard) {
-    // モデルの更新・描画を行う．
-    myBoard.IsingSystem.updateStateByMetropolis();
+    // モデルの更新を行う．
+    if (!isStatePaused()) {
+        myBoard.IsingSystem.updateStateByMetropolis();
+    }
+
+    // 色の反転処理．
+    if (reverseFlag == true) {
+        myBoard.IsingSystem.model.reverseAllSpins();
+        setReverseFlagFalse();
+    }
+
+    // TODO: 上下左右の移動
+
+    // モデルの描画を行う．
     myBoard.drawCurrentIsingState();
 
     // パラメータの変更を動的に受け付ける．
@@ -388,7 +479,7 @@ let init = function () {
         "role-model-canvas-3",
         "role-model-canvas-4",
     ];
-    for(let i = 0; i < roleModelIDList.length; i++){
+    for (let i = 0; i < roleModelIDList.length; i++) {
         const roleModelID = roleModelIDList[i];
         let roleModelCanvasElement = document.getElementById(roleModelID);
         let roleModelCanvas = new IsingCanvas(roleModelCanvasElement);
